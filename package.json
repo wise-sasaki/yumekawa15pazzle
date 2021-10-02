@@ -1,0 +1,35 @@
+{
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack -w",
+    "test": "jest",
+    "test-with-coverage": "npm test -- --coverage"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@types/jquery": "^3.5.5",
+    "jest": "^26.6.3",
+    "jquery": "^3.6.0",
+    "ts-jest": "^26.5.6",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.5",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.8.0"
+  },
+  "private": true,
+  "name": "15pazzle",
+  "description": "プロトタイプ版",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wise-sasaki/SlideShow.git"
+  },
+  "keywords": [],
+  "author": "KeimaSasaki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wise-sasaki/SlideShow/issues"
+  },
+  "homepage": "https://github.com/wise-sasaki/SlideShow#readme"
+}
