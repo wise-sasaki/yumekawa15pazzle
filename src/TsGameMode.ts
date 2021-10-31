@@ -1,5 +1,11 @@
+/**
+ * ゲームモードクラス
+ */
 export enum TsGameMode {
-    START,
+    /** タイトル画面 */
+    TITLE,
+    /** プレイ中画面 */
     INPLAY,
+    /** リザルト画面 */
     RESULT
 }

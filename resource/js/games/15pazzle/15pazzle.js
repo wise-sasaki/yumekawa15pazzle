@@ -15,14 +15,14 @@ __webpack_require__.r(__webpack_exports__);
 var Asset = (function () {
     function Asset() {
         this.assets = [
-            { type: 'image', name: 'cursor', src: '../../../img/games/15pazzle/cursor1.png' },
-            { type: 'image', name: 'title1', src: '../../../img/games/15pazzle/title_670x500.png' },
-            { type: 'image', name: 'title2', src: '../../../img/games/15pazzle/title_400x500.png' },
-            { type: 'se', name: 'shakin', src: '../../../se/games/15pazzle/shakin.mp3' },
-            { type: 'se', name: 'papa', src: '../../../se/games/15pazzle/papa.mp3' },
-            { type: 'se', name: 'pyui', src: '../../../se/games/15pazzle/pyui.mp3' },
-            { type: 'se', name: 'zyan', src: '../../../se/games/15pazzle/zyan.mp3' },
-            { type: 'se', name: 'popiropan', src: '../../../se/games/15pazzle/popiropan.mp3' },
+            { type: 'image', name: 'cursor', src: '../../img/games/15pazzle/cursor1.png' },
+            { type: 'image', name: 'title1', src: '../../img/games/15pazzle/title_670x500.png' },
+            { type: 'image', name: 'title2', src: '../../img/games/15pazzle/title_400x500.png' },
+            { type: 'se', name: 'shakin', src: '../../se/games/15pazzle/shakin.mp3' },
+            { type: 'se', name: 'papa', src: '../../se/games/15pazzle/papa.mp3' },
+            { type: 'se', name: 'pyui', src: '../../se/games/15pazzle/pyui.mp3' },
+            { type: 'se', name: 'zyan', src: '../../se/games/15pazzle/zyan.mp3' },
+            { type: 'se', name: 'popiropan', src: '../../se/games/15pazzle/popiropan.mp3' },
         ];
         this.totalCount = this.assets.length;
         this.loadCount = 0;
@@ -292,6 +292,57 @@ var TsButton = (function (_super) {
 
 /***/ }),
 
+/***/ "./src/TsClickEffect.ts":
+/*!******************************!*\
+  !*** ./src/TsClickEffect.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TsClickEffect": () => (/* binding */ TsClickEffect)
+/* harmony export */ });
+var TsClickEffect = (function () {
+    function TsClickEffect() {
+        this._x = 0;
+        this._y = 0;
+        this._r1 = 8;
+        this._r2 = 0;
+        this._expand = false;
+        this._move = 0;
+        this._animationCount = 1;
+    }
+    TsClickEffect.prototype.onClick = function (x, y) {
+        this._x = x;
+        this._y = y;
+        this._expand = true;
+        this._move = 0;
+    };
+    TsClickEffect.prototype.draw = function (ctx) {
+        if (this._expand) {
+            ctx.beginPath();
+            ctx.arc(this._x, this._y, this._r1 + this._move, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
+            ctx.strokeStyle = 'hsla(0, 0%, 100%, 30%)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(this._x, this._y, this._r2 + this._move, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
+            ctx.strokeStyle = 'hsla(0, 0%, 100%, 30%)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            this._move += this._animationCount;
+            if (this._move >= (this._r1 * 3)) {
+                this._expand = false;
+            }
+        }
+    };
+    return TsClickEffect;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/TsControl.ts":
 /*!**************************!*\
   !*** ./src/TsControl.ts ***!
@@ -371,7 +422,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "TsCursor": () => (/* binding */ TsCursor)
 /* harmony export */ });
 /* harmony import */ var _Asset__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Asset */ "./src/Asset.ts");
-/* harmony import */ var _TsPointer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TsPointer */ "./src/TsPointer.ts");
+/* harmony import */ var _TsClickEffect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TsClickEffect */ "./src/TsClickEffect.ts");
 
 
 var TsCursor = (function () {
@@ -379,7 +430,7 @@ var TsCursor = (function () {
         this._canvas = canvas;
         this._x = -1;
         this._y = -1;
-        this._pointer = new _TsPointer__WEBPACK_IMPORTED_MODULE_1__.TsPointer();
+        this._clickEffect = new _TsClickEffect__WEBPACK_IMPORTED_MODULE_1__.TsClickEffect();
         this._addEventListener();
     }
     TsCursor.prototype._addEventListener = function () {
@@ -397,128 +448,17 @@ var TsCursor = (function () {
             var rect = _this._canvas.getBoundingClientRect();
             var x = e.clientX - rect.left - 5;
             var y = e.clientY - rect.top - 5;
-            _this._pointer = new _TsPointer__WEBPACK_IMPORTED_MODULE_1__.TsPointer();
-            _this._pointer.onClick(x, y);
+            _this._clickEffect = new _TsClickEffect__WEBPACK_IMPORTED_MODULE_1__.TsClickEffect();
+            _this._clickEffect.onClick(x, y);
         });
     };
     TsCursor.prototype.render = function (ctx) {
-        this._pointer.draw(ctx);
+        this._clickEffect.draw(ctx);
         if (this._canvas.width > this._canvas.height) {
             ctx.drawImage(_Asset__WEBPACK_IMPORTED_MODULE_0__.Asset.images.cursor, this._x, this._y);
         }
     };
     return TsCursor;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/TsEndScreen.ts":
-/*!****************************!*\
-  !*** ./src/TsEndScreen.ts ***!
-  \****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TsEndScreen": () => (/* binding */ TsEndScreen)
-/* harmony export */ });
-/* harmony import */ var _TsButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TsButton */ "./src/TsButton.ts");
-/* harmony import */ var _TsPoint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TsPoint */ "./src/TsPoint.ts");
-/* harmony import */ var _Asset__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Asset */ "./src/Asset.ts");
-/* harmony import */ var _TsGameMode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TsGameMode */ "./src/TsGameMode.ts");
-/* harmony import */ var _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TsGameStatus */ "./src/TsGameStatus.ts");
-
-
-
-
-
-var TsEndScreen = (function () {
-    function TsEndScreen(canvas) {
-        var _this = this;
-        this._move = 0;
-        this._animationCount = 30;
-        this._delay = false;
-        this._delayCount = 0;
-        this._clickEventListener = function (e) {
-            var rect = _this._canvas.getBoundingClientRect();
-            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
-            if (_this._button.testHit(point)) {
-                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.volume = _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.masterVolume;
-                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.play();
-                _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_3__.TsGameMode.START;
-            }
-        };
-        this._mouseDownEventListener = function (e) {
-            var rect = _this._canvas.getBoundingClientRect();
-            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
-            if (_this._button.testHit(point)) {
-                _this._button.onMouseDown();
-            }
-        };
-        this._mouseUpEventListener = function (e) {
-            _this._button.onMouseUp();
-        };
-        this._mouseOutEventListener = function (e) {
-            _this._button.onMouseOut();
-        };
-        this._canvas = canvas;
-        var center = this._canvas.width / 2;
-        this._button = new _TsButton__WEBPACK_IMPORTED_MODULE_0__.TsButton(center - 125, 280, 250, 80, 10);
-        this._button.flashFlg = true;
-        this._delay = true;
-    }
-    TsEndScreen.prototype.reset = function () {
-        this._move = 0;
-        this._delayCount = 0;
-        this._delay = true;
-    };
-    TsEndScreen.prototype.addEventListener = function () {
-        this._canvas.addEventListener('click', this._clickEventListener);
-        this._canvas.addEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.addEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.addEventListener('mouseout', this._mouseOutEventListener);
-    };
-    TsEndScreen.prototype.removeEventListener = function () {
-        this._canvas.removeEventListener('click', this._clickEventListener);
-        this._canvas.removeEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.removeEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.removeEventListener('mouseout', this._mouseOutEventListener);
-    };
-    TsEndScreen.prototype.render = function (ctx) {
-        if (this._delay) {
-            if (this._delayCount >= this._animationCount * 100) {
-                this._delay = false;
-                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.zyan.volume = _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.masterVolume;
-                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.zyan.play();
-            }
-            this._delayCount += this._animationCount;
-            return;
-        }
-        ctx.fillStyle = "#99ccff";
-        ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 2, this._move, this._canvas.height / 5 * 2);
-        ctx.fillStyle = "#ff7fbf";
-        ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 2 + 10, this._move, 10);
-        ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 4 - 20, this._move, 10);
-        if (this._move >= this._canvas.width) {
-            ctx.font = "52px Shrikhand";
-            ctx.fillStyle = "#ff7fbf";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText("TIME", this._canvas.width / 2, this._canvas.height / 5 * 2);
-            ctx.fillText(_TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.totalTime.toFixed(3), this._canvas.width / 2, this._canvas.height / 2);
-            ctx.strokeStyle = "#fff";
-            ctx.lineWidth = 3;
-            ctx.strokeText("TIME", this._canvas.width / 2, this._canvas.height / 5 * 2);
-            ctx.strokeText(_TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.totalTime.toFixed(3), this._canvas.width / 2, this._canvas.height / 2);
-            this._button.draw("RETRY", ctx);
-        }
-        if (this._move <= this._canvas.width) {
-            this._move += this._animationCount;
-        }
-    };
-    return TsEndScreen;
 }());
 
 
@@ -537,7 +477,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 var TsGameMode;
 (function (TsGameMode) {
-    TsGameMode[TsGameMode["START"] = 0] = "START";
+    TsGameMode[TsGameMode["TITLE"] = 0] = "TITLE";
     TsGameMode[TsGameMode["INPLAY"] = 1] = "INPLAY";
     TsGameMode[TsGameMode["RESULT"] = 2] = "RESULT";
 })(TsGameMode || (TsGameMode = {}));
@@ -567,19 +507,19 @@ var TsGameStatus = (function () {
         set: function (gameMode) {
             var _a, _b, _c, _d, _e, _f, _g;
             switch (gameMode) {
-                case _TsGameMode__WEBPACK_IMPORTED_MODULE_0__.TsGameMode.START:
-                    (_a = TsGameStatus.startScreen) === null || _a === void 0 ? void 0 : _a.addEventListener();
-                    (_b = TsGameStatus.endScreen) === null || _b === void 0 ? void 0 : _b.removeEventListener();
+                case _TsGameMode__WEBPACK_IMPORTED_MODULE_0__.TsGameMode.TITLE:
+                    (_a = TsGameStatus.titleScreen) === null || _a === void 0 ? void 0 : _a.addEventListener();
+                    (_b = TsGameStatus.resultScreen) === null || _b === void 0 ? void 0 : _b.removeEventListener();
                     break;
                 case _TsGameMode__WEBPACK_IMPORTED_MODULE_0__.TsGameMode.INPLAY:
                     TsGameStatus.startTime = new Date();
-                    (_c = TsGameStatus.startScreen) === null || _c === void 0 ? void 0 : _c.removeEventListener();
+                    (_c = TsGameStatus.titleScreen) === null || _c === void 0 ? void 0 : _c.removeEventListener();
                     (_d = TsGameStatus.pazzle) === null || _d === void 0 ? void 0 : _d.addEventListener();
                     (_e = TsGameStatus.pazzle) === null || _e === void 0 ? void 0 : _e.shufflePanel();
                     break;
                 case _TsGameMode__WEBPACK_IMPORTED_MODULE_0__.TsGameMode.RESULT:
                     (_f = TsGameStatus.pazzle) === null || _f === void 0 ? void 0 : _f.removeEventListener();
-                    (_g = TsGameStatus.endScreen) === null || _g === void 0 ? void 0 : _g.addEventListener();
+                    (_g = TsGameStatus.resultScreen) === null || _g === void 0 ? void 0 : _g.addEventListener();
                     break;
             }
             TsGameStatus._gameMode = gameMode;
@@ -589,9 +529,9 @@ var TsGameStatus = (function () {
     });
     TsGameStatus._gameMode = null;
     TsGameStatus.pazzle = null;
-    TsGameStatus.pointer = null;
-    TsGameStatus.startScreen = null;
-    TsGameStatus.endScreen = null;
+    TsGameStatus.cursor = null;
+    TsGameStatus.titleScreen = null;
+    TsGameStatus.resultScreen = null;
     TsGameStatus.volume = null;
     TsGameStatus.reset = null;
     TsGameStatus.masterVolume = 0.1;
@@ -778,7 +718,7 @@ var TsPazzle = (function () {
         this._panels = [];
         this._items = [];
         this._blank = 15;
-        this._eventListener = function (e) {
+        this._clickEventHandler = function (e) {
             var rect = _this._canvas.getBoundingClientRect();
             var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
             for (var i = 0; i < _this._items.length; i++) {
@@ -805,7 +745,7 @@ var TsPazzle = (function () {
                 }
             }
         };
-        this._mouseDownEventListener = function (e) {
+        this._mouseDownEventHandler = function (e) {
             var rect = _this._canvas.getBoundingClientRect();
             var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
             for (var i = 0; i < _this._items.length; i++) {
@@ -816,12 +756,12 @@ var TsPazzle = (function () {
                 }
             }
         };
-        this._mouseUpEventListener = function (e) {
+        this._mouseUpEventHandler = function (e) {
             for (var i = 0; i < _this._items.length; i++) {
                 _this._items[i].onMouseUp();
             }
         };
-        this._mouseOutEventListener = function (e) {
+        this._mouseOutEventHandler = function (e) {
             for (var i = 0; i < _this._items.length; i++) {
                 _this._items[i].onMouseUp();
             }
@@ -832,16 +772,16 @@ var TsPazzle = (function () {
         this._timer = new _TsTimer__WEBPACK_IMPORTED_MODULE_3__.TsTimer(canvas.width - 10, 20, 100, 30);
     }
     TsPazzle.prototype.addEventListener = function () {
-        this._canvas.addEventListener('click', this._eventListener);
-        this._canvas.addEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.addEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.addEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.addEventListener('click', this._clickEventHandler);
+        this._canvas.addEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.addEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.addEventListener('mouseout', this._mouseOutEventHandler);
     };
     TsPazzle.prototype.removeEventListener = function () {
-        this._canvas.removeEventListener('click', this._eventListener);
-        this._canvas.removeEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.removeEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.removeEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.removeEventListener('click', this._clickEventHandler);
+        this._canvas.removeEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.removeEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.removeEventListener('mouseout', this._mouseOutEventHandler);
     };
     TsPazzle.prototype._createPanel = function () {
         var center = this._canvas.width / 2;
@@ -1103,57 +1043,6 @@ var TsPoint = (function () {
 
 /***/ }),
 
-/***/ "./src/TsPointer.ts":
-/*!**************************!*\
-  !*** ./src/TsPointer.ts ***!
-  \**************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TsPointer": () => (/* binding */ TsPointer)
-/* harmony export */ });
-var TsPointer = (function () {
-    function TsPointer() {
-        this._x = 0;
-        this._y = 0;
-        this._r1 = 8;
-        this._r2 = 0;
-        this._expand = false;
-        this._move = 0;
-        this._animationCount = 1;
-    }
-    TsPointer.prototype.onClick = function (x, y) {
-        this._x = x;
-        this._y = y;
-        this._expand = true;
-        this._move = 0;
-    };
-    TsPointer.prototype.draw = function (ctx) {
-        if (this._expand) {
-            ctx.beginPath();
-            ctx.arc(this._x, this._y, this._r1 + this._move, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
-            ctx.strokeStyle = 'hsla(0, 0%, 100%, 30%)';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(this._x, this._y, this._r2 + this._move, 0 * Math.PI / 180, 360 * Math.PI / 180, false);
-            ctx.strokeStyle = 'hsla(0, 0%, 100%, 30%)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            this._move += this._animationCount;
-            if (this._move >= (this._r1 * 3)) {
-                this._expand = false;
-            }
-        }
-    };
-    return TsPointer;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/TsResetButton.ts":
 /*!******************************!*\
   !*** ./src/TsResetButton.ts ***!
@@ -1177,26 +1066,26 @@ __webpack_require__.r(__webpack_exports__);
 var TsResetButton = (function () {
     function TsResetButton(canvas) {
         var _this = this;
-        this._clickEventListener = function (e) {
+        this._clickEventHandler = function (e) {
             var rect = _this._canvas.getBoundingClientRect();
             var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
             if (_this._button.testHit(point)) {
                 _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.volume = _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.masterVolume;
                 _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.play();
-                _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_3__.TsGameMode.START;
+                _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_3__.TsGameMode.TITLE;
             }
         };
-        this._mouseDownEventListener = function (e) {
+        this._mouseDownEventHandler = function (e) {
             var rect = _this._canvas.getBoundingClientRect();
             var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
             if (_this._button.testHit(point)) {
                 _this._button.onMouseDown();
             }
         };
-        this._mouseUpEventListener = function (e) {
+        this._mouseUpEventHandler = function (e) {
             _this._button.onMouseUp();
         };
-        this._mouseOutEventListener = function (e) {
+        this._mouseOutEventHandler = function (e) {
             _this._button.onMouseOut();
         };
         this._canvas = canvas;
@@ -1205,15 +1094,126 @@ var TsResetButton = (function () {
         this._addEventListener();
     }
     TsResetButton.prototype._addEventListener = function () {
-        this._canvas.addEventListener('click', this._clickEventListener);
-        this._canvas.addEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.addEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.addEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.addEventListener('click', this._clickEventHandler);
+        this._canvas.addEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.addEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.addEventListener('mouseout', this._mouseOutEventHandler);
     };
     TsResetButton.prototype.render = function (ctx) {
         this._button.draw("RESET", ctx);
     };
     return TsResetButton;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/TsResultScreen.ts":
+/*!*******************************!*\
+  !*** ./src/TsResultScreen.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TsResultScreen": () => (/* binding */ TsResultScreen)
+/* harmony export */ });
+/* harmony import */ var _TsButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TsButton */ "./src/TsButton.ts");
+/* harmony import */ var _TsPoint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TsPoint */ "./src/TsPoint.ts");
+/* harmony import */ var _Asset__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Asset */ "./src/Asset.ts");
+/* harmony import */ var _TsGameMode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TsGameMode */ "./src/TsGameMode.ts");
+/* harmony import */ var _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TsGameStatus */ "./src/TsGameStatus.ts");
+
+
+
+
+
+var TsResultScreen = (function () {
+    function TsResultScreen(canvas) {
+        var _this = this;
+        this._move = 0;
+        this._animationCount = 30;
+        this._delay = false;
+        this._delayCount = 0;
+        this._clickEventHandler = function (e) {
+            var rect = _this._canvas.getBoundingClientRect();
+            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
+            if (_this._button.testHit(point)) {
+                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.volume = _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.masterVolume;
+                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.play();
+                _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_3__.TsGameMode.TITLE;
+            }
+        };
+        this._mouseDownEventHandler = function (e) {
+            var rect = _this._canvas.getBoundingClientRect();
+            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
+            if (_this._button.testHit(point)) {
+                _this._button.onMouseDown();
+            }
+        };
+        this._mouseUpEventHandler = function (e) {
+            _this._button.onMouseUp();
+        };
+        this._mouseOutEventHandler = function (e) {
+            _this._button.onMouseOut();
+        };
+        this._canvas = canvas;
+        var center = this._canvas.width / 2;
+        this._button = new _TsButton__WEBPACK_IMPORTED_MODULE_0__.TsButton(center - 125, 280, 250, 80, 10);
+        this._button.flashFlg = true;
+        this._delay = true;
+    }
+    TsResultScreen.prototype.reset = function () {
+        this._move = 0;
+        this._delayCount = 0;
+        this._delay = true;
+    };
+    TsResultScreen.prototype.addEventListener = function () {
+        this._canvas.addEventListener('click', this._clickEventHandler);
+        this._canvas.addEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.addEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.addEventListener('mouseout', this._mouseOutEventHandler);
+    };
+    TsResultScreen.prototype.removeEventListener = function () {
+        this._canvas.removeEventListener('click', this._clickEventHandler);
+        this._canvas.removeEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.removeEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.removeEventListener('mouseout', this._mouseOutEventHandler);
+    };
+    TsResultScreen.prototype.render = function (ctx) {
+        if (this._delay) {
+            if (this._delayCount >= this._animationCount * 100) {
+                this._delay = false;
+                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.zyan.volume = _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.masterVolume;
+                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.zyan.play();
+            }
+            this._delayCount += this._animationCount;
+            return;
+        }
+        ctx.fillStyle = "#99ccff";
+        ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 2, this._move, this._canvas.height / 5 * 2);
+        ctx.fillStyle = "#ff7fbf";
+        ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 2 + 10, this._move, 10);
+        ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 4 - 20, this._move, 10);
+        if (this._move >= this._canvas.width) {
+            ctx.font = "52px Shrikhand";
+            ctx.fillStyle = "#ff7fbf";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("TIME", this._canvas.width / 2, this._canvas.height / 5 * 2);
+            ctx.fillText(_TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.totalTime.toFixed(3), this._canvas.width / 2, this._canvas.height / 2);
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = 3;
+            ctx.strokeText("TIME", this._canvas.width / 2, this._canvas.height / 5 * 2);
+            ctx.strokeText(_TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.totalTime.toFixed(3), this._canvas.width / 2, this._canvas.height / 2);
+            this._button.draw("RETRY", ctx);
+        }
+        if (this._move <= this._canvas.width) {
+            this._move += this._animationCount;
+        }
+    };
+    return TsResultScreen;
 }());
 
 
@@ -1251,8 +1251,9 @@ var TsSlider = (function (_super) {
     __extends(TsSlider, _super);
     function TsSlider(x, y, w, h) {
         var _this = _super.call(this, x, y, w, h) || this;
-        _this.max = x + 30;
-        _this.min = x - 30;
+        _this.RANGE = 30;
+        _this.max = x + _this.RANGE;
+        _this.min = x - _this.RANGE;
         return _this;
     }
     TsSlider.prototype.drag = function (x) {
@@ -1269,86 +1270,6 @@ var TsSlider = (function (_super) {
     };
     return TsSlider;
 }(_TsControl__WEBPACK_IMPORTED_MODULE_0__.TsControl));
-
-
-
-/***/ }),
-
-/***/ "./src/TsStartScreen.ts":
-/*!******************************!*\
-  !*** ./src/TsStartScreen.ts ***!
-  \******************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TsStartScreen": () => (/* binding */ TsStartScreen)
-/* harmony export */ });
-/* harmony import */ var _TsButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TsButton */ "./src/TsButton.ts");
-/* harmony import */ var _TsPoint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TsPoint */ "./src/TsPoint.ts");
-/* harmony import */ var _Asset__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Asset */ "./src/Asset.ts");
-/* harmony import */ var _TsGameMode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TsGameMode */ "./src/TsGameMode.ts");
-/* harmony import */ var _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TsGameStatus */ "./src/TsGameStatus.ts");
-
-
-
-
-
-var TsStartScreen = (function () {
-    function TsStartScreen(canvas) {
-        var _this = this;
-        this._clickEventListener = function (e) {
-            var rect = _this._canvas.getBoundingClientRect();
-            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
-            if (_this._button.testHit(point)) {
-                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.volume = _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.masterVolume;
-                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.play();
-                _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_3__.TsGameMode.INPLAY;
-            }
-        };
-        this._mouseDownEventListener = function (e) {
-            var rect = _this._canvas.getBoundingClientRect();
-            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
-            if (_this._button.testHit(point)) {
-                _this._button.onMouseDown();
-            }
-        };
-        this._mouseUpEventListener = function (e) {
-            _this._button.onMouseUp();
-        };
-        this._mouseOutEventListener = function (e) {
-            _this._button.onMouseOut();
-        };
-        this._canvas = canvas;
-        var center = this._canvas.width / 2;
-        this._button = new _TsButton__WEBPACK_IMPORTED_MODULE_0__.TsButton(center - 100, 300, 200, 80, 10);
-        this._button.flashFlg = true;
-    }
-    TsStartScreen.prototype.addEventListener = function () {
-        this._canvas.addEventListener('click', this._clickEventListener);
-        this._canvas.addEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.addEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.addEventListener('mouseout', this._mouseOutEventListener);
-    };
-    TsStartScreen.prototype.removeEventListener = function () {
-        this._canvas.removeEventListener('click', this._clickEventListener);
-        this._canvas.removeEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.removeEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.removeEventListener('mouseout', this._mouseOutEventListener);
-    };
-    TsStartScreen.prototype.render = function (ctx) {
-        if (this._canvas.width < this._canvas.height) {
-            var excess = (_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title2.width - this._canvas.width) / 2;
-            ctx.drawImage(_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title2, -excess, 0);
-        }
-        else {
-            var excess = (_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title1.width - this._canvas.width) / 2;
-            ctx.drawImage(_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title1, -excess, 0);
-        }
-        this._button.draw("PLAY", ctx);
-    };
-    return TsStartScreen;
-}());
 
 
 
@@ -1398,6 +1319,86 @@ var TsTimer = (function (_super) {
     };
     return TsTimer;
 }(_TsControl__WEBPACK_IMPORTED_MODULE_0__.TsControl));
+
+
+
+/***/ }),
+
+/***/ "./src/TsTitleScreen.ts":
+/*!******************************!*\
+  !*** ./src/TsTitleScreen.ts ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TsTitleScreen": () => (/* binding */ TsTitleScreen)
+/* harmony export */ });
+/* harmony import */ var _TsButton__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TsButton */ "./src/TsButton.ts");
+/* harmony import */ var _TsPoint__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TsPoint */ "./src/TsPoint.ts");
+/* harmony import */ var _Asset__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Asset */ "./src/Asset.ts");
+/* harmony import */ var _TsGameMode__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TsGameMode */ "./src/TsGameMode.ts");
+/* harmony import */ var _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TsGameStatus */ "./src/TsGameStatus.ts");
+
+
+
+
+
+var TsTitleScreen = (function () {
+    function TsTitleScreen(canvas) {
+        var _this = this;
+        this._clickEventHandler = function (e) {
+            var rect = _this._canvas.getBoundingClientRect();
+            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
+            if (_this._button.testHit(point)) {
+                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.volume = _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.masterVolume;
+                _Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.soundEffects.papa.play();
+                _TsGameStatus__WEBPACK_IMPORTED_MODULE_4__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_3__.TsGameMode.INPLAY;
+            }
+        };
+        this._mouseDownEventHandler = function (e) {
+            var rect = _this._canvas.getBoundingClientRect();
+            var point = new _TsPoint__WEBPACK_IMPORTED_MODULE_1__.TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
+            if (_this._button.testHit(point)) {
+                _this._button.onMouseDown();
+            }
+        };
+        this._mouseUpEventHandler = function (e) {
+            _this._button.onMouseUp();
+        };
+        this._mouseOutEventHandler = function (e) {
+            _this._button.onMouseOut();
+        };
+        this._canvas = canvas;
+        var center = this._canvas.width / 2;
+        this._button = new _TsButton__WEBPACK_IMPORTED_MODULE_0__.TsButton(center - 100, 300, 200, 80, 10);
+        this._button.flashFlg = true;
+    }
+    TsTitleScreen.prototype.addEventListener = function () {
+        this._canvas.addEventListener('click', this._clickEventHandler);
+        this._canvas.addEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.addEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.addEventListener('mouseout', this._mouseOutEventHandler);
+    };
+    TsTitleScreen.prototype.removeEventListener = function () {
+        this._canvas.removeEventListener('click', this._clickEventHandler);
+        this._canvas.removeEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.removeEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.removeEventListener('mouseout', this._mouseOutEventHandler);
+    };
+    TsTitleScreen.prototype.render = function (ctx) {
+        if (this._canvas.width < this._canvas.height) {
+            var excess = (_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title2.width - this._canvas.width) / 2;
+            ctx.drawImage(_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title2, -excess, 0);
+        }
+        else {
+            var excess = (_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title1.width - this._canvas.width) / 2;
+            ctx.drawImage(_Asset__WEBPACK_IMPORTED_MODULE_2__.Asset.images.title1, -excess, 0);
+        }
+        this._button.draw("PLAY", ctx);
+    };
+    return TsTitleScreen;
+}());
 
 
 
@@ -1546,8 +1547,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./TsGameStatus */ "./src/TsGameStatus.ts");
 /* harmony import */ var _TsPazzle__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./TsPazzle */ "./src/TsPazzle.ts");
 /* harmony import */ var _TsCursor__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./TsCursor */ "./src/TsCursor.ts");
-/* harmony import */ var _TsStartScreen__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TsStartScreen */ "./src/TsStartScreen.ts");
-/* harmony import */ var _TsEndScreen__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./TsEndScreen */ "./src/TsEndScreen.ts");
+/* harmony import */ var _TsTitleScreen__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./TsTitleScreen */ "./src/TsTitleScreen.ts");
+/* harmony import */ var _TsResultScreen__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./TsResultScreen */ "./src/TsResultScreen.ts");
 /* harmony import */ var _TsVolume__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./TsVolume */ "./src/TsVolume.ts");
 /* harmony import */ var _TsResetButton__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./TsResetButton */ "./src/TsResetButton.ts");
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
@@ -1624,13 +1625,13 @@ var Main = (function () {
                         loading = document.querySelector('.loading');
                         loading.style.display = 'none';
                         this.bg = new _TsBackGround__WEBPACK_IMPORTED_MODULE_1__.TsBackGround(0, 0, this.canvas.width, this.canvas.height);
-                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.startScreen = new _TsStartScreen__WEBPACK_IMPORTED_MODULE_6__.TsStartScreen(this.canvas);
+                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.titleScreen = new _TsTitleScreen__WEBPACK_IMPORTED_MODULE_6__.TsTitleScreen(this.canvas);
                         _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.pazzle = new _TsPazzle__WEBPACK_IMPORTED_MODULE_4__.TsPazzle(this.canvas);
-                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.pointer = new _TsCursor__WEBPACK_IMPORTED_MODULE_5__.TsCursor(this.canvas);
-                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.endScreen = new _TsEndScreen__WEBPACK_IMPORTED_MODULE_7__.TsEndScreen(this.canvas);
+                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.cursor = new _TsCursor__WEBPACK_IMPORTED_MODULE_5__.TsCursor(this.canvas);
+                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.resultScreen = new _TsResultScreen__WEBPACK_IMPORTED_MODULE_7__.TsResultScreen(this.canvas);
                         _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.volume = new _TsVolume__WEBPACK_IMPORTED_MODULE_8__.TsVolume(this.canvas);
                         _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.reset = new _TsResetButton__WEBPACK_IMPORTED_MODULE_9__.TsResetButton(this.canvas);
-                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_2__.TsGameMode.START;
+                        _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.gameMode = _TsGameMode__WEBPACK_IMPORTED_MODULE_2__.TsGameMode.TITLE;
                         requestAnimationFrame(function () { return _this.update(); });
                         return [2];
                 }
@@ -1644,21 +1645,21 @@ var Main = (function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         (_a = this.bg) === null || _a === void 0 ? void 0 : _a.render(this.context);
         switch (_TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.gameMode) {
-            case _TsGameMode__WEBPACK_IMPORTED_MODULE_2__.TsGameMode.START:
-                (_b = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.endScreen) === null || _b === void 0 ? void 0 : _b.reset();
-                (_c = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.startScreen) === null || _c === void 0 ? void 0 : _c.render(this.context);
+            case _TsGameMode__WEBPACK_IMPORTED_MODULE_2__.TsGameMode.TITLE:
+                (_b = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.resultScreen) === null || _b === void 0 ? void 0 : _b.reset();
+                (_c = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.titleScreen) === null || _c === void 0 ? void 0 : _c.render(this.context);
                 break;
             case _TsGameMode__WEBPACK_IMPORTED_MODULE_2__.TsGameMode.INPLAY:
                 (_d = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.pazzle) === null || _d === void 0 ? void 0 : _d.render(this.context);
                 break;
             case _TsGameMode__WEBPACK_IMPORTED_MODULE_2__.TsGameMode.RESULT:
                 (_e = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.pazzle) === null || _e === void 0 ? void 0 : _e.render(this.context);
-                (_f = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.endScreen) === null || _f === void 0 ? void 0 : _f.render(this.context);
+                (_f = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.resultScreen) === null || _f === void 0 ? void 0 : _f.render(this.context);
                 break;
         }
         (_g = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.volume) === null || _g === void 0 ? void 0 : _g.render(this.context);
         (_h = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.reset) === null || _h === void 0 ? void 0 : _h.render(this.context);
-        (_j = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.pointer) === null || _j === void 0 ? void 0 : _j.render(this.context);
+        (_j = _TsGameStatus__WEBPACK_IMPORTED_MODULE_3__.TsGameStatus.cursor) === null || _j === void 0 ? void 0 : _j.render(this.context);
     };
     return Main;
 }());

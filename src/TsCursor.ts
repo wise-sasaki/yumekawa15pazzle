@@ -1,18 +1,30 @@
 import { Asset } from "./Asset";
-import { TsPointer } from "./TsPointer";
-
+import { TsClickEffect } from "./TsClickEffect";
+/**
+ * 指先カーソルクラス
+ */
 export class TsCursor {
+    /** canvas */
     private _canvas: HTMLCanvasElement;
+    /** x座標 */
     private _x: number;
+    /** y座標 */
     private _y: number;
-    private _pointer: TsPointer;
+    /** クリックエフェクトクラス */
+    private _clickEffect: TsClickEffect;
+
+    /** コンストラクタ */
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
         this._x = -1;
         this._y = -1;
-        this._pointer = new TsPointer();
+        this._clickEffect = new TsClickEffect();
         this._addEventListener();
     }
+
+    /**
+     * イベントハンドラー登録処理
+     */
     private _addEventListener(): void {
         this._canvas.addEventListener('mousemove', (e: MouseEvent) => {
             const rect = this._canvas.getBoundingClientRect();
@@ -27,13 +39,18 @@ export class TsCursor {
             const rect = this._canvas.getBoundingClientRect();
             const x = e.clientX - rect.left - 5;
             const y = e.clientY - rect.top - 5;
-            this._pointer = new TsPointer();
-            this._pointer.onClick(x, y);
+            this._clickEffect = new TsClickEffect();
+            this._clickEffect.onClick(x, y);
         });
     }
+
+    /**
+     * 描画処理
+     * @param ctx 2D
+     */
     public render(ctx: CanvasRenderingContext2D) {
         // ポイントアニメーションの描画
-        this._pointer.draw(ctx);
+        this._clickEffect.draw(ctx);
         // カーソルの描画
         if (this._canvas.width > this._canvas.height) {
             // 横長の場合

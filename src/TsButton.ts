@@ -1,11 +1,29 @@
 import { TsControl } from "./TsControl";
+/**
+ * ボタン共通クラス
+ */
 export class TsButton extends TsControl {
+    /** ボタンの角丸の半径 */
     private _r: number;
+    /** ボタンダウン状態 */
     private _active: boolean;
+    /** ボタンの明滅有無 */
     private _flashFlg: boolean = false;
+    /** ボタンの明滅時の色変化 */
     private _color: number = 0;
+    /** ボタンの明滅状態 */
     private _lapelFlg: boolean = false;
+    /** アニメーション可変値 */
     private _animationCount: number = 0.1;
+
+    /**
+     * コンストラクター
+     * @param x x座標
+     * @param y y座標
+     * @param w 横幅
+     * @param h 縦幅
+     * @param r 角丸の半径
+     */
     constructor(x: number, y: number, w: number, h: number, r: number) {
         super(x, y, w, h);
         this._r = r;
@@ -19,7 +37,13 @@ export class TsButton extends TsControl {
         this._flashFlg = flg;
     }
 
+    /**
+     * ボタンの描画処理
+     * @param str ボタン文言
+     * @param ctx 2D
+     */
     public draw(str: string, ctx: CanvasRenderingContext2D): void {
+        // グラデーション指定
         const r_color = ctx.createLinearGradient(this.x, this.y + this.h, this.x, this.y);
         // マウスダウン時、ボタンの色を変更する
         if (this._active) {
@@ -48,7 +72,7 @@ export class TsButton extends TsControl {
         ctx.fillText(str, this.x + this.w / 2, this.y + this.h / 2);
 
         if (this._flashFlg) {
-            // 常時ボタンが明滅するアニメーションを付加する
+            // 常時ボタンが明滅するアニメーションになるようにボタンの明滅状態を更新する
             if (this._color > 10) {
                 this._lapelFlg = true;
             } else if (this._color < 0) {

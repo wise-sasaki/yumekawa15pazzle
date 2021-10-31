@@ -1,14 +1,36 @@
 import { TsControl } from "./TsControl";
+/**
+ * 背景アニメーション反映クラス
+ */
 export class TsBackGround extends TsControl {
+    /** グラデーション1初期位置 */
     private _color1: number = 0.25;
+    /** グラデーション2初期位置 */
     private _color2: number = 0.5;
+    /** グラデーション3初期位置 */
     private _color3: number = 0.75;
+    /** グラデーション4初期位置 */
     private _color4: number = 0.99;
+    /** グラデーション可変位置 */
     private _move: number = 0;
+    /** アニメーション可変値 */
     private _animationCount: number = 0.0005;
+
+    /**
+     * コンストラクター
+     * @param x x座標
+     * @param y y座標
+     * @param w 横幅
+     * @param h 縦幅
+     */
     constructor(x: number, y: number, w: number, h: number) {
         super(x, y, w, h);
     }
+
+    /**
+     * 描画処理
+     * @param ctx 2D
+     */
     public render(ctx: CanvasRenderingContext2D): void {
         // 背景のスクロールアニメーション
         const r_color = ctx.createLinearGradient(this.x, -this.h * 4, this.x, this.h * 4);

@@ -1,19 +1,33 @@
 import { TsControl } from "./TsControl";
+/**
+ * パネルクラス
+ */
 export class TsPanel extends TsControl {
+    /** 角丸の角度 */
     private _r: number;
+    /** パネルの数字 */
     private _bangou: string = "";
+    /** アクティブ状態 */
     private _active: boolean;
+    /** 点滅状態 */
     private _flashFlg: boolean = false;
+    /** 繰り返し回数 */
     private _repeatCount: number = 0;
+    /** 色相 */
     private _color: number = 0;
+    /** 折り返し状態 */
     private _lapelFlg: boolean = false;
-    private _animationCount: number = 2;
+    /** アニメーション量 */
+    private readonly _animationCount: number = 2;
+
+    /** コンストラクタ */
     constructor(x: number, y: number, w: number, h: number, r: number) {
         super(x, y, w, h);
         this._r = r;
         this._active = false;
     }
 
+    /** getter setter */
     get bangou() {
         return this._bangou;
     }
@@ -28,6 +42,13 @@ export class TsPanel extends TsControl {
         this._flashFlg = flg;
     }
 
+    /**
+     * 描画処理
+     * @param ctx 2D
+     * @param panel パネル番号
+     * @param matchFlg パネルが正しい位置かどうか
+     * @returns 
+     */
     public draw(ctx: CanvasRenderingContext2D, panel: string, matchFlg: boolean): void {
         if (panel === "") {
             // 空パネルの場合は描画しない
@@ -36,8 +57,6 @@ export class TsPanel extends TsControl {
         // パネルの描画
         const r_color = ctx.createRadialGradient(this.x + this.w / 2, this.y + this.h / 2, 0, this.x + this.w / 2, this.y + this.h / 2, this.h / 2);
         if (this._active) {
-            // r_color.addColorStop(0, "#7f7fff");
-            // r_color.addColorStop(1, "#ff7fff");
             r_color.addColorStop(0, `hsl(240,100%,${74 + this._color}%)`);
             r_color.addColorStop(1, `hsl(300,100%,${74 + this._color}%)`);
         } else {
@@ -105,12 +124,21 @@ export class TsPanel extends TsControl {
         // 番号の設定
         this.bangou = panel;
     }
+    /**
+     * mousedown処理
+     */
     public onMouseDown(): void {
         this._active = true;
     }
+    /**
+     * mouseup処理
+     */
     public onMouseUp(): void {
         this._active = false;
     }
+    /**
+     * mouseout処理
+     */
     public onMouseOut(): void {
         this._active = false;
     }

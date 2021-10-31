@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="https://www.games-cattleya.com/img/logo180x180.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.games-cattleya.com/img/logo180x180.png">
+    <meta name="application-name" content="無料ゲーム「TOYBOX」">
+    <meta name="msapplication-square70x70logo" content="https://www.games-cattleya.com/img/logo70x70.png">
+    <meta name="msapplication-square150x150logo" content="https://www.games-cattleya.com/img/logo150x150.png">
+    <meta name="msapplication-wide310x150logo" content="https://www.games-cattleya.com/img/logo310x150.png">
+    <meta name="msapplication-square310x310logo" content="https://www.games-cattleya.com/img/logo310x310.png">
+    <meta name="msapplication-TileColor" content="#FAA500">
+    <meta property="og:title" content="15パズル ｜ 無料ゲーム「TOYBOX」">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="無料のブラウザゲームサイト「TOYBOX」へようこそ！ダウンロード不要の無料ゲームを公開しています。">
+    <meta property="og:url" content="https://www.games-cattleya.com/">
+    <meta property="og:site_name" content="無料ゲーム「TOYBOX」">
+    <meta property="og:image" content="https://www.games-cattleya.com/img/logo310x310.png">
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@toybox92114194" />
+    <meta name="twitter:title" content="１５パズル ｜ 無料ゲーム「TOYBOX」" />
+    <meta name="twitter:description" content="単純なスライドパズルです。" />
+    <meta name="twitter:image" content="https://www.games-cattleya.com/img/logo180x180.png" />
+    <meta name="twitter:url" content="https://www.games-cattleya.com/games/15pazzle/15pazzle.html" />
+    <title>TOYBOX 無料ゲーム-15パズル</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/destyle.css">
+    <link type="text/css" rel="stylesheet" href="../../css/style.css" />
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script type="text/javascript" src="../../js/games/15pazzle/15pazzle.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1233291646322342"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <main class="wrap">
+        <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemprop="item" href="../../index.html">
+                    <span itemprop="name">TOYBOXトップページ</span>
+                </a>
+                <meta itemprop="position" content="1" />
+            </li>
+            <li>
+                <a itemprop="item" href="./15pazzle.html">
+                    <span itemprop="name">１５パズル</span>
+                </a>
+                <meta itemprop="position" content="2" />
+            </li>
+        </ol>
+        <div class="game-area">
+            <div class="game-box">
+                <canvas id="15pazzle"></canvas>
+                <div class="loading">
+                    <i class="fas fa-circle-notch fa-spin"></i>
+                </div>
+                <div class="explanation">
+                    <p>最終更新日：2021/10/03</p>
+                    <div class="hidden-box">
+                        <label for="hidden1">遊び方</label>
+                        <input type="checkbox" id="hidden1">
+                        <div class="hidden-show">
+                            <p>ランダムに並べられた数字（１～１５）の描かれたパネルをクリックします。</br>クリックしたパネルの周囲にスペースが空いているとその方向にパネルが移動します。</p>
+                            <img src="../../img/games/15pazzle/title.png" alt="完成形">
+                            <p>左上から１～１５の順番にパネルを並べることができればゲームクリアです。</p>
+                        </div>
+                    </div>
+                    <div class="hidden-box">
+                        <label for="hidden2">攻略法</label>
+                        <input type="checkbox" id="hidden2">
+                        <div class="hidden-show">
+                            <p>①2行目まで（１～４、２～８）は上の行から順番にそろえていきます。</p>
+                            <p>②行における最後の１つは、あえて配置をずらして滑り込ませるように入れ替えるテクニックで簡単に揃えることができます。</p>
+                            <img src="../../img/games/15pazzle/howtoplay1.png" alt="攻略法1">
+                            <img src="../../img/games/15pazzle/howtoplay2.png" alt="攻略法2">
+                            <img src="../../img/games/15pazzle/howtoplay3.png" alt="攻略法3">
+                            <img src="../../img/games/15pazzle/howtoplay4.png" alt="攻略法4">
+                            <p>③９と１３をそろえます。</p>
+                            <img src="../../img/games/15pazzle/howtoplay5.png" alt="攻略法5">
+                            <p>④一時的に１４と１５を縦に並べておきます。</p>
+                            <img src="../../img/games/15pazzle/howtoplay6.png" alt="攻略法6">
+                            <p>⑤１０、１１、１２がつながるように並び替えます。</p>
+                            <img src="../../img/games/15pazzle/howtoplay7.png" alt="攻略法7">
+                            <p>⑥あとはずらすだけで完成です。</p>
+                            <img src="../../img/games/15pazzle/title.png" alt="完成形">
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="adsence-box1">
+                <div class="adsence2">
+                    <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1233291646322342"
+                        crossorigin="anonymous"></script>
+                    <!-- 横長 -->
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1233291646322342"
+                        data-ad-slot="5539322127" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+            <div class="adsence-box2">
+                <div class="adsence2">
+                    <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1233291646322342"
+                        crossorigin="anonymous"></script>
+                    <!-- 横長 -->
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1233291646322342"
+                        data-ad-slot="5539322127" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+            <div class="adsence-box3">
+                <div class="adsence">
+                    <script async
+                        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1233291646322342"
+                        crossorigin="anonymous"></script>
+                    <!-- 横長 -->
+                    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1233291646322342"
+                        data-ad-slot="5539322127" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                    <script>
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>

@@ -1,9 +1,21 @@
 import { TsControl } from "./TsControl";
+/**
+ * タイマー表示クラス
+ */
 export class TsTimer extends TsControl {
+    /** タイマー */
     public time: number = 0;
+
+    /** コンストラクタ */
     constructor(x: number, y: number, w: number, h: number) {
         super(x, y, w, h);
     }
+
+    /**
+     * 描画処理
+     * @param num 時間
+     * @param ctx 2D
+     */
     public draw(num: number, ctx: CanvasRenderingContext2D): void {
         this.time = num;
         ctx.font = `bold 30px serif`;

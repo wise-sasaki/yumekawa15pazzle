@@ -1,13 +1,21 @@
 import { TsSlider } from "./TsSlider";
 import { TsPoint } from "./TsPoint";
+/**
+ * 音量ボリューム表示クラス
+ */
 export class TsVolume {
+    /** canvas */
     private _canvas: HTMLCanvasElement;
     private _slider: TsSlider;
+
+    /** コンストラクタ */
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
         this._slider = new TsSlider(this._canvas.width - 55, this._canvas.height - 35, 10, 20);
         this._addEventListener();
     }
+
+    /** イベントリスナー登録処理 */
     private _addEventListener(): void {
         this._canvas.addEventListener('mousedown', (e: MouseEvent) => {
             const rect = this._canvas.getBoundingClientRect();
@@ -35,6 +43,11 @@ export class TsVolume {
         });
 
     }
+
+    /**
+     * 描画処理
+     * @param ctx 2D
+     */
     public render(ctx: CanvasRenderingContext2D) {
         // 三角形の図形描画
         ctx.fillStyle = "#7f7fff";

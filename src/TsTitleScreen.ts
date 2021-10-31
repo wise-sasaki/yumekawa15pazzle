@@ -3,9 +3,16 @@ import { TsPoint } from "./TsPoint";
 import { Asset } from "./Asset";
 import { TsGameMode } from "./TsGameMode";
 import { TsGameStatus } from "./TsGameStatus";
-export class TsStartScreen {
+/**
+ * タイトル画面クラス
+ */
+export class TsTitleScreen {
+    /** canvas */
     private _canvas: HTMLCanvasElement;
+    /** 汎用ボタンクラス */
     private _button: TsButton;
+
+    /** コンストラクタ */
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
         const center = this._canvas.width / 2;
@@ -13,7 +20,8 @@ export class TsStartScreen {
         this._button.flashFlg = true;
     }
 
-    private _clickEventListener = (e: MouseEvent) => {
+    /** clickイベントハンドラー */
+    private _clickEventHandler = (e: MouseEvent) => {
         const rect = this._canvas.getBoundingClientRect();
         const point = new TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
         if (this._button.testHit(point)) {
@@ -23,40 +31,47 @@ export class TsStartScreen {
             TsGameStatus.gameMode = TsGameMode.INPLAY;
         }
     };
-    private _mouseDownEventListener = (e: MouseEvent) => {
+    /** mousedownイベントハンドラー */
+    private _mouseDownEventHandler = (e: MouseEvent) => {
         const rect = this._canvas.getBoundingClientRect();
         const point = new TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
         if (this._button.testHit(point)) {
             this._button.onMouseDown();
         }
     };
-    private _mouseUpEventListener = (e: MouseEvent) => {
+    /** mouseupイベントハンドラー */
+    private _mouseUpEventHandler = (e: MouseEvent) => {
         this._button.onMouseUp();
     };
-    private _mouseOutEventListener = (e: MouseEvent) => {
+    /** mouseoutイベントハンドラー */
+    private _mouseOutEventHandler = (e: MouseEvent) => {
         this._button.onMouseOut();
     };
 
+    /** イベントリスナー登録処理 */
     public addEventListener(): void {
-        this._canvas.addEventListener('click', this._clickEventListener);
-        this._canvas.addEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.addEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.addEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.addEventListener('click', this._clickEventHandler);
+        this._canvas.addEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.addEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.addEventListener('mouseout', this._mouseOutEventHandler);
     }
 
+    /** イベントリスナー削除処理 */
     public removeEventListener(): void {
-        this._canvas.removeEventListener('click', this._clickEventListener);
-        this._canvas.removeEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.removeEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.removeEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.removeEventListener('click', this._clickEventHandler);
+        this._canvas.removeEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.removeEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.removeEventListener('mouseout', this._mouseOutEventHandler);
     }
 
+    /** 描画処理 */
     public render(ctx: CanvasRenderingContext2D): void {
         if (this._canvas.width < this._canvas.height) {
             // 縦長の場合
             const excess = (Asset.images['title2'].width - this._canvas.width) / 2;
             ctx.drawImage(Asset.images['title2'], -excess, 0);
         } else {
+            // それ以外の場合
             const excess = (Asset.images['title1'].width - this._canvas.width) / 2;
             ctx.drawImage(Asset.images['title1'], -excess, 0);
         }

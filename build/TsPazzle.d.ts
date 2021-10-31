@@ -6,10 +6,10 @@ export declare class TsPazzle {
     private _timer;
     private _blank;
     constructor(canvas: HTMLCanvasElement);
-    private _eventListener;
-    private _mouseDownEventListener;
-    private _mouseUpEventListener;
-    private _mouseOutEventListener;
+    private _clickEventHandler;
+    private _mouseDownEventHandler;
+    private _mouseUpEventHandler;
+    private _mouseOutEventHandler;
     addEventListener(): void;
     removeEventListener(): void;
     private _createPanel;

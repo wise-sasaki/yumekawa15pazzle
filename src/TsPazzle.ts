@@ -4,14 +4,24 @@ import { TsPanel } from "./TsPanel";
 import { TsTimer } from "./TsTimer";
 import { TsGameStatus } from "./TsGameStatus";
 import { TsGameMode } from "./TsGameMode";
+/**
+ * パズル画面クラス
+ */
 export class TsPazzle {
+    /** canvas */
     private _canvas: HTMLCanvasElement;
+    /** 正解のパネル順序配列 */
     private readonly _defaultPanels: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", ""];
+    /** 現在のパネル順序配列 */
     private _panels: string[] = [];
+    /** パネルクラス */
     private _items: TsPanel[] = [];
+    /** タイマー表示クラス */
     private _timer: TsTimer;
+    /** 空パネル位置 */
     private _blank: number = 15;
 
+    /** コンストラクタ */
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
         this._panels = Array.from(this._defaultPanels);
@@ -19,7 +29,8 @@ export class TsPazzle {
         this._timer = new TsTimer(canvas.width - 10, 20, 100, 30);
     }
 
-    private _eventListener = (e: MouseEvent) => {
+    /** clickイベントハンドラー */
+    private _clickEventHandler = (e: MouseEvent) => {
         const rect = this._canvas.getBoundingClientRect();
         const point = new TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
         for (let i = 0; i < this._items.length; i++) {
@@ -49,7 +60,8 @@ export class TsPazzle {
             }
         }
     };
-    private _mouseDownEventListener = (e: MouseEvent) => {
+    /** mousedownイベントハンドラー */
+    private _mouseDownEventHandler = (e: MouseEvent) => {
         const rect = this._canvas.getBoundingClientRect();
         const point = new TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
         for (let i = 0; i < this._items.length; i++) {
@@ -60,32 +72,38 @@ export class TsPazzle {
             }
         }
     };
-    private _mouseUpEventListener = (e: MouseEvent) => {
+    /** mouseupイベントハンドラー */
+    private _mouseUpEventHandler = (e: MouseEvent) => {
         for (let i = 0; i < this._items.length; i++) {
             this._items[i].onMouseUp();
         }
     };
-    private _mouseOutEventListener = (e: MouseEvent) => {
+    /** mouseupイベントハンドラー */
+    private _mouseOutEventHandler = (e: MouseEvent) => {
         for (let i = 0; i < this._items.length; i++) {
             this._items[i].onMouseUp();
         }
     };
 
-
+    /** イベントハンドラー登録処理 */
     public addEventListener(): void {
-        this._canvas.addEventListener('click', this._eventListener);
-        this._canvas.addEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.addEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.addEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.addEventListener('click', this._clickEventHandler);
+        this._canvas.addEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.addEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.addEventListener('mouseout', this._mouseOutEventHandler);
     }
 
+    /** イベントハンドラー削除処理 */
     public removeEventListener(): void {
-        this._canvas.removeEventListener('click', this._eventListener);
-        this._canvas.removeEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.removeEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.removeEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.removeEventListener('click', this._clickEventHandler);
+        this._canvas.removeEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.removeEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.removeEventListener('mouseout', this._mouseOutEventHandler);
     }
 
+    /**
+     * パネル作成処理
+     */
     private _createPanel(): void {
         const center = this._canvas.width / 2;
         let panelSize = this._canvas.width / 8;
@@ -140,6 +158,10 @@ export class TsPazzle {
         this._items.push(panel16);
     }
 
+    /**
+     * 描画処理
+     * @param ctx 2D
+     */
     public render(ctx: CanvasRenderingContext2D): void {
         this._items.forEach((_, i) => {
             this._items[i].draw(ctx, this._panels[i], this._isMatchPanel(this._defaultPanels[i], this._panels[i]));
@@ -154,6 +176,11 @@ export class TsPazzle {
 
     }
 
+    /**
+     * パネル変更判定処理
+     * @param select 選択パネル
+     * @returns 変更したパネル番号
+     */
     private _changePanel(select: number): number {
         if (select === 0) {
             if (1 === this._blank) {
@@ -225,6 +252,12 @@ export class TsPazzle {
         return -1;
     }
 
+    /**
+     * パネル入れ替え処理
+     * @param select 選択パネル
+     * @param blank 空パネル
+     * @returns 
+     */
     private _replace(select: number, blank: number): number {
         const tmp = this._panels[select];
         this._panels[select] = "";
@@ -233,6 +266,9 @@ export class TsPazzle {
         return blank;
     }
 
+    /**
+     * パネルのシャッフル処理
+     */
     public shufflePanel(): void {
         const difficulty = 1000;
         for (let i = 0; i < difficulty; i++) {
@@ -241,6 +277,11 @@ export class TsPazzle {
         }
     }
 
+    /**
+     * 行の揃った判定処理
+     * @param replaceNum 入れ替えたパネル
+     * @returns 
+     */
     private _rowChecker(replaceNum: number): number[] {
         if (replaceNum < 0) {
             return [];
@@ -290,6 +331,10 @@ export class TsPazzle {
         return [];
     }
 
+    /**
+     * パズルの完成判定処理
+     * @returns true:完成,false:未完成
+     */
     private _isFinish(): boolean {
         for (let i = 0; i < this._panels.length; i++) {
             if (!this._isMatchPanel(this._defaultPanels[i], this._panels[i])) {
@@ -299,6 +344,12 @@ export class TsPazzle {
         return true;
     }
 
+    /**
+     * パネル順序配列の比較処理
+     * @param panel1 パネル順序配列
+     * @param panel2 パネル順序配列
+     * @returns true:一致,false:不一致
+     */
     private _isMatchPanel(panel1: string, panel2: string): boolean {
         if (panel1 !== panel2) {
             return false;

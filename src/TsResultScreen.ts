@@ -3,13 +3,24 @@ import { TsPoint } from "./TsPoint";
 import { Asset } from "./Asset";
 import { TsGameMode } from "./TsGameMode";
 import { TsGameStatus } from "./TsGameStatus";
-export class TsEndScreen {
+/**
+ * リザルト画面クラス
+ */
+export class TsResultScreen {
+    /** canvas */
     private _canvas: HTMLCanvasElement;
+    /** retryボタン */
     private _button: TsButton;
+    /** アニメーション可変値 */
     private _move: number = 0;
-    private _animationCount: number = 30;
+    /** アニメーション量 */
+    private readonly _animationCount: number = 30;
+    /** アニメーション遅延フラグ */
     private _delay: boolean = false;
+    /** アニメーション遅延時間 */
     private _delayCount: number = 0;
+
+    /** コンストラクタ */
     constructor(canvas: HTMLCanvasElement) {
         this._canvas = canvas;
         const center = this._canvas.width / 2;
@@ -18,52 +29,70 @@ export class TsEndScreen {
         this._delay = true;
     }
 
+    /**
+     * リセット処理
+     */
     public reset(): void {
         this._move = 0;
         this._delayCount = 0;
         this._delay = true;
     }
 
-    private _clickEventListener = (e: MouseEvent) => {
+    /** clickイベントハンドラー */
+    private _clickEventHandler = (e: MouseEvent) => {
         const rect = this._canvas.getBoundingClientRect();
         const point = new TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
         if (this._button.testHit(point)) {
             Asset.soundEffects['papa'].volume = TsGameStatus.masterVolume;
             Asset.soundEffects['papa'].play();
-            TsGameStatus.gameMode = TsGameMode.START;
+            TsGameStatus.gameMode = TsGameMode.TITLE;
         }
     }
-    private _mouseDownEventListener = (e: MouseEvent) => {
+    /** mousedownイベントハンドラー */
+    private _mouseDownEventHandler = (e: MouseEvent) => {
         const rect = this._canvas.getBoundingClientRect();
         const point = new TsPoint(e.clientX - rect.left - 5, e.clientY - rect.top - 5);
         if (this._button.testHit(point)) {
             this._button.onMouseDown();
         }
     };
-    private _mouseUpEventListener = (e: MouseEvent) => {
+    /** mouseupイベントハンドラー */
+    private _mouseUpEventHandler = (e: MouseEvent) => {
         this._button.onMouseUp();
     };
-    private _mouseOutEventListener = (e: MouseEvent) => {
+    /** mouseoutイベントハンドラー */
+    private _mouseOutEventHandler = (e: MouseEvent) => {
         this._button.onMouseOut();
     };
 
+    /**
+     * イベントハンドラー登録処理
+     */
     public addEventListener(): void {
-        this._canvas.addEventListener('click', this._clickEventListener);
-        this._canvas.addEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.addEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.addEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.addEventListener('click', this._clickEventHandler);
+        this._canvas.addEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.addEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.addEventListener('mouseout', this._mouseOutEventHandler);
     }
 
+    /**
+     * イベントハンドラー削除処理
+     */
     public removeEventListener(): void {
-        this._canvas.removeEventListener('click', this._clickEventListener);
-        this._canvas.removeEventListener('mousedown', this._mouseDownEventListener);
-        this._canvas.removeEventListener('mouseup', this._mouseUpEventListener);
-        this._canvas.removeEventListener('mouseout', this._mouseOutEventListener);
+        this._canvas.removeEventListener('click', this._clickEventHandler);
+        this._canvas.removeEventListener('mousedown', this._mouseDownEventHandler);
+        this._canvas.removeEventListener('mouseup', this._mouseUpEventHandler);
+        this._canvas.removeEventListener('mouseout', this._mouseOutEventHandler);
     }
 
+    /**
+     * 描画処理
+     * @param ctx 2D
+     */
     public render(ctx: CanvasRenderingContext2D): void {
         if (this._delay) {
             if (this._delayCount >= this._animationCount * 100) {
+                // リザルト画面に切り替わったタイミングでは、クリアタイムの表示を出さないで遅らせたタイミングで表示させるための処理
                 this._delay = false;
                 Asset.soundEffects['zyan'].volume = TsGameStatus.masterVolume;
                 Asset.soundEffects['zyan'].play();
@@ -71,13 +100,14 @@ export class TsEndScreen {
             this._delayCount += this._animationCount;
             return;
         }
-        // 背景の描画
+        // 帯の描画
         ctx.fillStyle = "#99ccff";
         ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 2, this._move, this._canvas.height / 5 * 2);
         ctx.fillStyle = "#ff7fbf";
         ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 2 + 10, this._move, 10);
         ctx.fillRect(this._canvas.width - this._move, this._canvas.height / 5 * 4 - 20, this._move, 10);
         if (this._move >= this._canvas.width) {
+            // 帯が全て表示されたタイミングで表示する
             // クリアタイムの描画
             ctx.font = `52px Shrikhand`;
             ctx.fillStyle = "#ff7fbf";

@@ -1,11 +1,11 @@
-export declare class TsStartScreen {
+export declare class TsTitleScreen {
     private _canvas;
     private _button;
     constructor(canvas: HTMLCanvasElement);
-    private _clickEventListener;
-    private _mouseDownEventListener;
-    private _mouseUpEventListener;
-    private _mouseOutEventListener;
+    private _clickEventHandler;
+    private _mouseDownEventHandler;
+    private _mouseUpEventHandler;
+    private _mouseOutEventHandler;
     addEventListener(): void;
     removeEventListener(): void;
     render(ctx: CanvasRenderingContext2D): void;

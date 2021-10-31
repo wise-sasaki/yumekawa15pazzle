@@ -7,7 +7,7 @@ export declare class TsPanel extends TsControl {
     private _repeatCount;
     private _color;
     private _lapelFlg;
-    private _animationCount;
+    private readonly _animationCount;
     constructor(x: number, y: number, w: number, h: number, r: number);
     get bangou(): string;
     set bangou(num: string);
